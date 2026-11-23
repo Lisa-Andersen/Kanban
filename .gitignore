@@ -55,3 +55,23 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider (if anyone uses it)
+.idea/
+
+# Local application settings
+appsettings.Development.local.json
+appsettings.Local.json
+
+# Test coverage
+coverage/
+coverage.cobertura.xml
+*.coverage
+*.coveragexml
