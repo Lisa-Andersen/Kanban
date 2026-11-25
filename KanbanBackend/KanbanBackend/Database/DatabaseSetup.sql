@@ -1,1 +1,8 @@
-﻿
+﻿IF DB_ID('Kanban') IS NULL
+BEGIN
+    CREATE DATABASE Kanban;
+END
+GO
+
+USE Kanban;
+GO
