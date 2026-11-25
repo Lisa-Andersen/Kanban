@@ -1,4 +1,18 @@
-﻿
+﻿USE master;
+GO
+
+DECLARE @ResetAll BIT = 0; -- Set to 1 to drop and recreate the database, 0 to keep existing data
+
+IF @ResetAll = 1 AND DB_ID('Kanban') IS NOT NULL
+BEGIN
+    ALTER DATABASE Kanban
+        SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+
+    DROP DATABASE Kanban;
+END
+GO
+
+
 IF DB_ID('Kanban') IS NULL
 BEGIN
     CREATE DATABASE Kanban;
@@ -66,11 +80,14 @@ BEGIN
         StateID INT NOT NULL DEFAULT 1,
         PriorityID INT NOT NULL DEFAULT 3,
         Type NVARCHAR(20) NOT NULL,
-        EstimatedTime INT NULL,
+        EstimatedDays INT NULL,
         UserNote NVARCHAR(MAX) NULL,
         ParentWorkItemID INT NULL,
         OwnerID INT NULL,
         SprintDone INT NULL,
+        CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+        UpdatedAt DATETIME2,
+        SortOrder INT NOT NULL DEFAULT 0,
 
         FOREIGN KEY (FeatureID)
             REFERENCES dbo.Features(FeatureID),
@@ -87,7 +104,11 @@ BEGIN
         FOREIGN KEY (OwnerID)
             REFERENCES dbo.Users(UserID),
 
-        CHECK (Type IN ('UserStory', 'Bug'))
+        CHECK (Type IN ('UserStory', 'Bug')),
+        CHECK (Type IN ('UserStory', 'Bug')),
+        CHECK (EstimatedTime >= 0),
+        CHECK (SprintDone > 0),
+        CHECK (ParentWorkItemID <> WorkItemID)
     );
 END
 GO
