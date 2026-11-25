@@ -80,13 +80,13 @@ BEGIN
         StateID INT NOT NULL DEFAULT 1,
         PriorityID INT NOT NULL DEFAULT 3,
         Type NVARCHAR(20) NOT NULL,
-        EstimatedDays INT NULL,
+        EstimatedDays DECIMAL(5,2) NULL,
         UserNote NVARCHAR(MAX) NULL,
         ParentWorkItemID INT NULL,
         OwnerID INT NULL,
         SprintDone INT NULL,
-        CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-        UpdatedAt DATETIME2,
+        CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        UpdatedAt DATETIME2 NULL,
         SortOrder INT NOT NULL DEFAULT 0,
 
         FOREIGN KEY (FeatureID)
@@ -105,10 +105,10 @@ BEGIN
             REFERENCES dbo.Users(UserID),
 
         CHECK (Type IN ('UserStory', 'Bug')),
-        CHECK (Type IN ('UserStory', 'Bug')),
-        CHECK (EstimatedTime >= 0),
+        CHECK (EstimatedDays >= 0),
         CHECK (SprintDone > 0),
-        CHECK (ParentWorkItemID <> WorkItemID)
+        CHECK (ParentWorkItemID <> WorkItemID),
+        CHECK (SortOrder >= 0)
     );
 END
 GO
