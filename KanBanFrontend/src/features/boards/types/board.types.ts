@@ -1,0 +1,1 @@
+export type ColumnId = 'backlog' | 'todo' | 'in-progress' | 'qa-test' | 'done'
