@@ -1,6 +1,6 @@
 ﻿namespace KanbanBackend.Services
 {
-    public class UserStoryService
+    public class WorkItemService
     {
     }
 }

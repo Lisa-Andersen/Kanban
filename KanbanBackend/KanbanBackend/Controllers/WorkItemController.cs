@@ -5,7 +5,7 @@ namespace KanbanBackend.Controllers;
 
 [ApiController]
 [Route("api/userstories")]
-public class UserStoriesController : ControllerBase
+public class WorkItemController : ControllerBase
 {
     [HttpPost]
     public IActionResult NewUserStory()

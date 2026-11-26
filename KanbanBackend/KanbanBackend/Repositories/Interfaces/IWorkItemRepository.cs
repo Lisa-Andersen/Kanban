@@ -1,6 +1,6 @@
 ﻿namespace KanbanBackend.Repositories.Interfaces
 {
-    public class IUserStoryRepository
+    public class IWorkItemRepository
     {
     }
 }

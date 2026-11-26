@@ -1,6 +1,6 @@
 ﻿namespace KanbanBackend.Repositories
 {
-    public class UserStoryRepository
+    public class WorkItemRepository
     {
     }
 }
