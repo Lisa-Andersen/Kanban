@@ -1,6 +1,8 @@
-﻿namespace KanbanBackend.Repositories.Interfaces
+﻿using KanbanBackend.Models;
+namespace KanbanBackend.Repositories.Interfaces
 {
-    public class IKanbanStateRepository
+    public interface IKanbanStateRepository
     {
+        Task<List<KanbanState>> GetAllKanbanStatesAsync();
     }
 }
