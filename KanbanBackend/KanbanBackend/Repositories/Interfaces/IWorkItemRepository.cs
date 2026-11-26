@@ -1,6 +1,6 @@
-﻿namespace KanbanBackend.Repositories.Interfaces
+﻿namespace KanbanBackend.Repositories.Interfaces;
+
+public interface IWorkItemRepository
 {
-    public class IWorkItemRepository
-    {
-    }
+    Task GetAllWorkItemsAsync();
 }
