@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IKanbanStateRepository, KanbanStateRepository>();
+builder.Services.AddScoped<IWorkItemRepository, WorkItemRepository>();
 
 builder.Services.AddScoped<IKanbanStateService, KanbanStateService>();
 
