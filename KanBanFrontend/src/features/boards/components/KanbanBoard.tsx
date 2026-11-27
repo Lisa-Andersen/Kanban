@@ -13,9 +13,9 @@ const columns: { id: ColumnId; title: string }[] = [
 
 interface KanbanBoardProps {
   items: KanbanItem[]
-  onMove: (itemId: string, columnId: ColumnId) => void
+  onMove: (itemId: number, columnId: ColumnId) => void
   onEditStory: (story: UserStory) => void
-  onToggleTask: (taskId: string) => void
+  onToggleTask: (taskId: number) => void
 }
 
 export function KanbanBoard({
@@ -24,14 +24,14 @@ export function KanbanBoard({
   onEditStory,
   onToggleTask,
 }: KanbanBoardProps) {
-  const [draggedId, setDraggedId] = useState<string | null>(null)
+  const [draggedId, setDraggedId] = useState<number | null>(null)
 
-  const relatedTitle = (storyId: string) =>
+  const relatedTitle = (storyId: number) =>
     items.find((item) => item.id === storyId)?.title ?? 'Ukendt user story'
 
   const handleDrop = (event: DragEvent, columnId: ColumnId) => {
     event.preventDefault()
-    if (draggedId) onMove(draggedId, columnId)
+    if (draggedId !== null) onMove(draggedId, columnId)
     setDraggedId(null)
   }
 

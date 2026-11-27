@@ -2,7 +2,7 @@ import type { Task } from '../types/task.type'
 
 interface TaskListProps {
   tasks: Task[]
-  onToggle: (taskId: string) => void
+  onToggle: (taskId: number) => void
 }
 
 export function TaskList({ tasks, onToggle }: TaskListProps) {

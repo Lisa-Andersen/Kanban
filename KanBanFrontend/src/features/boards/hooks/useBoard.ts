@@ -31,7 +31,7 @@ export function useBoard() {
     }
   }, [])
 
-  const moveItem = async (itemId: string, columnId: ColumnId) => {
+  const moveItem = async (itemId: number, columnId: ColumnId) => {
     const item = items.find((current) => current.id === itemId)
     if (!item || item.columnId === columnId) return
 

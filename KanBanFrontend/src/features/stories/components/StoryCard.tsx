@@ -6,7 +6,7 @@ interface StoryCardProps {
   relatedTitle?: string
   onDragStart: () => void
   onEdit?: (story: UserStory) => void
-  onToggleTask: (taskId: string) => void
+  onToggleTask: (taskId: number) => void
 }
 
 export function StoryCard({

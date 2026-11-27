@@ -10,9 +10,11 @@ const emptyDraft: StoryDraft = {
   assignee: '',
   estimation: 1,
   tasks: '',
-  relatedUserStoryId: '',
+  relatedUserStoryId: null,
   columnId: 'backlog',
 }
+
+let nextTemporaryWorkItemId = -1
 
 export function useStories(
   items: KanbanItem[],
@@ -21,15 +23,15 @@ export function useStories(
 ) {
   const [form, setForm] = useState<StoryForm>(null)
   const [draft, setDraft] = useState<StoryDraft>(emptyDraft)
-  const [editingStoryId, setEditingStoryId] = useState<string | null>(null)
+  const [editingStoryId, setEditingStoryId] = useState<number | null>(null)
 
   const openForm = (type: Exclude<StoryForm, null>) => {
     setDraft({
       ...emptyDraft,
       relatedUserStoryId:
         type === 'bug'
-          ? items.find((item) => item.type === 'user-story')?.id ?? ''
-          : '',
+          ? items.find((item) => item.type === 'user-story')?.id ?? null
+          : null,
     })
     setForm(type)
   }
@@ -49,14 +51,20 @@ export function useStories(
       assignee: story.assignee,
       estimation: story.estimation,
       tasks: story.tasks.map((task) => task.title).join('\n'),
-      relatedUserStoryId: '',
+      relatedUserStoryId: null,
       columnId: story.columnId,
     })
   }
 
   const submitStory = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!draft.title.trim() || !draft.description.trim() || !draft.assignee.trim()) return
+    const relatedUserStoryId = draft.relatedUserStoryId
+    if (
+      !draft.title.trim() ||
+      !draft.description.trim() ||
+      !draft.assignee.trim() ||
+      (form === 'bug' && relatedUserStoryId === null)
+    ) return
 
     try {
       if (form === 'user') {
@@ -68,7 +76,7 @@ export function useStories(
           tasks: createTasks(draft.tasks),
           columnId: draft.columnId,
         }
-        if (editingStoryId) {
+        if (editingStoryId !== null) {
           const existing = items.find(
             (item): item is UserStory =>
               item.id === editingStoryId && item.type === 'user-story',
@@ -90,12 +98,13 @@ export function useStories(
         const created = await storyService.createUserStory(story)
         setItems((current) => [...current, created])
       } else if (form === 'bug') {
+        if (relatedUserStoryId === null) return
         const bug: Omit<BugUserStory, 'id' | 'type'> = {
           title: draft.title.trim(),
           description: draft.description.trim(),
           assignee: draft.assignee.trim(),
           estimation: draft.estimation,
-          relatedUserStoryId: draft.relatedUserStoryId,
+          relatedUserStoryId,
           columnId: draft.columnId,
         }
         const created = await storyService.createBugStory(bug)
@@ -103,7 +112,7 @@ export function useStories(
       }
       closeForm()
     } catch {
-      if (form === 'user' && editingStoryId) {
+      if (form === 'user' && editingStoryId !== null) {
         setItems((current) =>
           current.map((item) => {
             if (item.id !== editingStoryId || item.type !== 'user-story') return item
@@ -124,7 +133,7 @@ export function useStories(
         return
       }
 
-      const localId = `${form}-${Date.now()}`
+      const localId = nextTemporaryWorkItemId--
 
       if (form === 'user') {
         const story: UserStory = {
@@ -139,6 +148,7 @@ export function useStories(
         }
         setItems((current) => [...current, story])
       } else if (form === 'bug') {
+        if (relatedUserStoryId === null) return
         const bug: BugUserStory = {
           id: localId,
           type: 'bug',
@@ -146,7 +156,7 @@ export function useStories(
           description: draft.description.trim(),
           assignee: draft.assignee.trim(),
           estimation: draft.estimation,
-          relatedUserStoryId: draft.relatedUserStoryId,
+          relatedUserStoryId,
           columnId: draft.columnId,
         }
         setItems((current) => [...current, bug])

@@ -8,6 +8,6 @@ export interface StoryDraft {
   assignee: string
   estimation: number
   tasks: string
-  relatedUserStoryId: string
+  relatedUserStoryId: number | null
   columnId: ColumnId
 }

@@ -7,7 +7,7 @@ interface StoryFormModalProps {
   form: Exclude<StoryForm, null>
   draft: StoryDraft
   setDraft: Dispatch<SetStateAction<StoryDraft>>
-  editingStoryId: string | null
+  editingStoryId: number | null
   items: KanbanItem[]
   onClose: () => void
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
@@ -67,7 +67,16 @@ export function StoryFormModal({
           {form === 'bug' && (
             <label>
               Relateret userstory
-              <select required value={draft.relatedUserStoryId} onChange={(event) => setDraft({ ...draft, relatedUserStoryId: event.target.value })}>
+              <select
+                required
+                value={draft.relatedUserStoryId ?? ''}
+                onChange={(event) =>
+                  setDraft({
+                    ...draft,
+                    relatedUserStoryId: event.target.value ? Number(event.target.value) : null,
+                  })
+                }
+              >
                 {items.filter((item) => item.type === 'user-story').map((item) => (
                   <option key={item.id} value={item.id}>{item.title}</option>
                 ))}
