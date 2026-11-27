@@ -1,13 +1,8 @@
 import type { ColumnId } from '../../boards/types/board.types'
-
-export interface Task {
-  id: string
-  title: string
-  completed: boolean
-}
+import type { Task } from '../../tasks/types/task.type'
 
 export interface UserStory {
-  id: string
+  id: number
   type: 'user-story'
   title: string
   description: string
@@ -18,13 +13,13 @@ export interface UserStory {
 }
 
 export interface BugUserStory {
-  id: string
+  id: number
   type: 'bug'
   title: string
   description: string
   assignee: string
   estimation: number
-  relatedUserStoryId: string
+  relatedUserStoryId: number
   columnId: ColumnId
 }
 
