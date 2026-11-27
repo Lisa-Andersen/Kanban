@@ -2,10 +2,12 @@ import type { Dispatch, SetStateAction } from 'react'
 import type { KanbanItem } from '../../stories/types/story.types'
 
 export function useTasks(setItems: Dispatch<SetStateAction<KanbanItem[]>>) {
-  const toggleTask = (storyId: string, taskId: string) => {
+  const toggleTask = (taskId: string) => {
     setItems((current) =>
       current.map((item) => {
-        if (item.id !== storyId || item.type !== 'user-story') return item
+        if (item.type !== 'user-story') return item
+        if (!item.tasks.some((task) => task.id === taskId)) return item
+
         return {
           ...item,
           tasks: item.tasks.map((task) =>

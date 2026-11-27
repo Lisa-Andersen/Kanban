@@ -15,7 +15,7 @@ interface KanbanBoardProps {
   items: KanbanItem[]
   onMove: (itemId: string, columnId: ColumnId) => void
   onEditStory: (story: UserStory) => void
-  onToggleTask: (storyId: string, taskId: string) => void
+  onToggleTask: (taskId: string) => void
 }
 
 export function KanbanBoard({
