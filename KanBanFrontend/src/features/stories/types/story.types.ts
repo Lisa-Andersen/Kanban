@@ -1,10 +1,5 @@
 import type { ColumnId } from '../../boards/types/board.types'
-
-export interface Task {
-  id: string
-  title: string
-  completed: boolean
-}
+import type { Task } from '../../tasks/types/task.type'
 
 export interface UserStory {
   id: string
